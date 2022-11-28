@@ -65,7 +65,7 @@ def talker(pub, beats, timestamp, top = 4, bottom = 4):
     # have anything to send
 
     # Publish our string to the 'audiosignal' topic
-    pub.publish(beats, rospy.get_time(), top, bottom)
+    # pub.publish(beats, timestamp, top, bottom)
 
 
 # this just records from your microphone
@@ -288,7 +288,9 @@ if __name__ == "__main__":
             # Check if the node has received a signal to shut down. If not, run the
             # talker method.
             try:
-                talker(pub, bpm, time_processed)
+                # talker(pub, bpm, time_processed)
+                # I replaced the call to talker() with just this core function
+                pub.publish(beats, time_processed, 4, 4)
             except rospy.ROSInterruptException: pass
 
             old_bpm = bpm
