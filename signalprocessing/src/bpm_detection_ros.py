@@ -46,17 +46,19 @@ WAVE_OUTPUT_FILENAME = "test.wav"
 
 
 # We'll use this function to publish AudioInfo messages
-def talker(beats, timestamp, top = 4, bottom = 4):
+def talker(pub, beats, timestamp, top = 4, bottom = 4):
 
 
     # TODO: I'm not sure if you can move the below Publisher initialization into main
     # It seems like it's wasting overhead by initializing the object every time. 
     # It might be worth initializing pub in main and then passing it into this function
+    # I'm also worried it might just create issues with the subscriber since the node needs to be
+    # regenerated everytime
 
-    # Create an instance of the rospy.Publisher object which we can use to
-    # publish messages to a topic. This publisher publishes messages of type
-    # AudioInfo to the topic /audiosignal
-    pub = rospy.Publisher('audiosignal', AudioInfo, queue_size=10)
+    # # Create an instance of the rospy.Publisher object which we can use to
+    # # publish messages to a topic. This publisher publishes messages of type
+    # # AudioInfo to the topic /audiosignal
+    # pub = rospy.Publisher('audiosignal', AudioInfo, queue_size=10)
     
     # In lab we did a while loop around publish, but that doesn't seem to be relevant
     # here as we will publish when we receive a message, and won't when we don't 
@@ -218,6 +220,15 @@ if __name__ == "__main__":
     # I just used example_pub.py code
     rospy.init_node('talker', anonymous=True)
 
+    # I moved the below from talker(); hopefully it still works, but if it doesn't it might be 
+    # worth uncommenting the old version in talker() and massing None as the first argument to talker()
+    # the commit prior to this one should have the right version
+
+    # Create an instance of the rospy.Publisher object which we can use to
+    # publish messages to a topic. This publisher publishes messages of type
+    # AudioInfo to the topic /audiosignal
+    pub = rospy.Publisher('audiosignal', AudioInfo, queue_size=10)
+
 
     # Keep track of the old BPM
     old_bpm = 0
@@ -277,7 +288,7 @@ if __name__ == "__main__":
             # Check if the node has received a signal to shut down. If not, run the
             # talker method.
             try:
-                talker(bpm, time_processed)
+                talker(pub, bpm, time_processed)
             except rospy.ROSInterruptException: pass
 
             old_bpm = bpm
