@@ -183,53 +183,51 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # samps, fs = record_voice()
-
-    while(True):
     
-        record_voice()
-        
-        samps, fs = read_wav(args.filename)
+    
+    record_voice()
+    
+    samps, fs = read_wav(args.filename)
 
-        # samps, fs = record_voice()
-        print(fs, samps[1])
-        data = []
-        correl = []
-        bpm = 0
-        n = 0
-        nsamps = len(samps)
-        window_samps = int(args.window * fs)
-        samps_ndx = 0  # First sample in window_ndx
-        max_window_ndx = math.floor(nsamps / window_samps)
-        bpms = numpy.zeros(max_window_ndx)
+    # samps, fs = record_voice()
+    print(fs, samps[1])
+    data = []
+    correl = []
+    bpm = 0
+    n = 0
+    nsamps = len(samps)
+    window_samps = int(args.window * fs)
+    samps_ndx = 0  # First sample in window_ndx
+    max_window_ndx = math.floor(nsamps / window_samps)
+    bpms = numpy.zeros(max_window_ndx)
 
-        # Iterate through all windows
-        for window_ndx in range(0, max_window_ndx):
+    # Iterate through all windows
+    for window_ndx in range(0, max_window_ndx):
 
-            # Get a new set of samples
-            # print(n,":",len(bpms),":",max_window_ndx_int,":",fs,":",nsamps,":",samps_ndx)
-            data = samps[samps_ndx : samps_ndx + window_samps]
-            if not ((len(data) % window_samps) == 0):
-                raise AssertionError(str(len(data)))
+        # Get a new set of samples
+        # print(n,":",len(bpms),":",max_window_ndx_int,":",fs,":",nsamps,":",samps_ndx)
+        data = samps[samps_ndx : samps_ndx + window_samps]
+        if not ((len(data) % window_samps) == 0):
+            raise AssertionError(str(len(data)))
 
-            bpm, correl_temp = bpm_detector(data, fs)
-            if bpm is None:
-                continue
-            bpms[window_ndx] = bpm
-            correl = correl_temp
+        bpm, correl_temp = bpm_detector(data, fs)
+        if bpm is None:
+            continue
+        bpms[window_ndx] = bpm
+        correl = correl_temp
 
-            # Iterate at the end of the loop
-            samps_ndx = samps_ndx + window_samps
+        # Iterate at the end of the loop
+        samps_ndx = samps_ndx + window_samps
 
-            # Counter for debug...
-            n = n + 1
+        # Counter for debug...
+        n = n + 1
 
-        bpm = numpy.median(bpms)
-        print("Completed!  Estimated Beats Per Minute:", bpm)
+    bpm = numpy.median(bpms)
+    print("Completed!  Estimated Beats Per Minute:", bpm)
 
-        # n = range(0, len(correl))
-        # plt.plot(n, abs(correl))
-        # plt.show(block=True)
-        
+    n = range(0, len(correl))
+    plt.plot(n, abs(correl))
+    plt.show(block=True)
 
 
 #NOTES: super interesting, it appears that if the BPM < 110, it doubles it, otherwise it's accurate. 

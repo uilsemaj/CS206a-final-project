@@ -29,44 +29,44 @@ from scipy import signal
 
 import pyaudio
 import rospy
-from signalprocessing.msg import BeatInfo
+from signalprocessing.msg import AudioInfo
 
+# These parameters all seem to work for the BPM detector
+# RECORD_SECONDS is how long to sample audio from the 
+# microphone before writing it and passing it to the detector. 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 2
 RATE = 44100
 RECORD_SECONDS = 4
 
+#can rename this if you want, I assume you don't already
+# have a test.wav file
 WAVE_OUTPUT_FILENAME = "test.wav"
 
 
-def talker(beats, top = 4, bottom = 4):
+# We'll use this function to publish AudioInfo messages
+def talker(beats, timestamp, top = 4, bottom = 4):
 
-    # Create an instance of the rospy.Publisher object which we can  use to
+
+    # TODO: I'm not sure if you can move the below Publisher initialization into main
+    # It seems like it's wasting overhead by initializing the object every time. 
+    # It might be worth initializing pub in main and then passing it into this function
+
+    # Create an instance of the rospy.Publisher object which we can use to
     # publish messages to a topic. This publisher publishes messages of type
-    # std_msgs/String to the topic /chatter_talk
-    pub = rospy.Publisher('chatter_talk', BeatInfo, queue_size=10)
+    # AudioInfo to the topic /audiosignal
+    pub = rospy.Publisher('audiosignal', AudioInfo, queue_size=10)
     
-    # Create a timer object that will sleep long enough to result in a 10Hz
-    # publishing rate
-    r = rospy.Rate(1) # 10hz
+    # In lab we did a while loop around publish, but that doesn't seem to be relevant
+    # here as we will publish when we receive a message, and won't when we don't 
+    # have anything to send
 
-    # Loop until the node is killed with Ctrl-C
-    while not rospy.is_shutdown():
-        # Construct a string that we want to publish (in Python, the "%"
-        # operator functions similarly to sprintf in C or MATLAB)
-        print("Please enter a line of text and press <Enter>: ")
-
-        pub_string = input()
-        
-        # Publish our string to the 'chatter_talk' topic
-        pub.publish(beats, rospy.get_time(), top, bottom)
-        # print(rospy.get_name() + ": I sent \"%s\"" % pub_string)
-        
-        # Use our rate object to sleep until it is time to publish again
-        r.sleep()
+    # Publish our string to the 'audiosignal' topic
+    pub.publish(beats, rospy.get_time(), top, bottom)
 
 
+# this just records from your microphone
 def record_voice():
     p = pyaudio.PyAudio()
 
@@ -98,6 +98,9 @@ def record_voice():
     wf.writeframes(b''.join(frames))
     wf.close()
     # return b''.join(frames), RATE
+
+    #return the time this finished recording
+    return rospy.get_time()
 
 
 def read_wav(filename):
@@ -210,13 +213,28 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    rospy.init_node('beatsignal', anonymous=True)
+
+    # Let's get the node "talker" started - can rename this if it conflicts
+    # I just used example_pub.py code
+    rospy.init_node('talker', anonymous=True)
+
+
+    # Keep track of the old BPM
+    old_bpm = 0
+
+    # Let's run this indefinitely
+    # TODO: add end condition
     while True:
-        record_voice()
+        #record 4 secs of audio and write it to the file at args.filename 
+        time_processed = record_voice()
+
+        #then read the recoding in
         samps, fs = read_wav(args.filename)
 
+        # if we could record voice directly and pass it to this, that would be ideal
+        # but this doesn't currently work
         # samps, fs = record_voice()
-        print(fs, samps[1])
+        
         data = []
         correl = []
         bpm = 0
@@ -250,17 +268,22 @@ if __name__ == "__main__":
 
         bpm = numpy.median(bpms)
 
-        # Run this program as a new node in the ROS computation graph called /talker.
-        
+        # Run this program as a new node in the ROS computation graph called /beatsignal.
+        # Only run if we have a new BPM; otherwise, there's no point in sending a new message
+        # We might also want to to set a buffer (e.g. if BPM doesn't change by more than 5,
+        # there's no point in updating as this could just be margin of error)
+        if bpm != old_bpm:
+            
+            # Check if the node has received a signal to shut down. If not, run the
+            # talker method.
+            try:
+                talker(bpm, time_processed)
+            except rospy.ROSInterruptException: pass
 
-        # Check if the node has received a signal to shut down. If not, run the
-        # talker method.
-        try:
-            talker(bpm)
-        except rospy.ROSInterruptException: pass
+            old_bpm = bpm
 
+        # Debug here - this is all old code
         # print("Completed!  Estimated Beats Per Minute:", bpm)
-
         # n = range(0, len(correl))
         # plt.plot(n, abs(correl))
         # plt.show(block=True)

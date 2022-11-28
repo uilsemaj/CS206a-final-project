@@ -5,6 +5,7 @@ conda activate roboticsfinalproject
 ## File
 - bpm-detection taken from: https://github.com/scaperot/the-BPM-detector-python
 - works decently enough.
+- FOR ROS VERSION: use bpm_detection_ros.py
 
 ## calibration
 - 80 bpm: shows up as 160 bpm on bpm_detection
