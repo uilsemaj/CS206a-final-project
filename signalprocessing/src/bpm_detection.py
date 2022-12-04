@@ -181,7 +181,12 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
+
+    # samps, fs = record_voice()
+    
+    
     record_voice()
+    
     samps, fs = read_wav(args.filename)
 
     # samps, fs = record_voice()
