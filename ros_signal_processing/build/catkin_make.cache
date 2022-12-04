@@ -1,0 +1,2 @@
+signal_processing
+-DCATKIN_DEVEL_PREFIX=/home/cc/ee106a/fa22/class/ee106a-agl/ros_workspaces/Github/CS206a-final-project/ros_signal_processing/devel -DCMAKE_INSTALL_PREFIX=/home/cc/ee106a/fa22/class/ee106a-agl/ros_workspaces/Github/CS206a-final-project/ros_signal_processing/install -G Unix Makefiles
