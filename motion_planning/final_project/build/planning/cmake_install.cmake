@@ -1,8 +1,8 @@
-# Install script for directory: /home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/src/planning
+# Install script for directory: /home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/src/planning
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/install")
+  set(CMAKE_INSTALL_PREFIX "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,17 +38,17 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/build/planning/catkin_generated/installspace/planning.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/planning/catkin_generated/installspace/planning.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning/cmake" TYPE FILE FILES
-    "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/build/planning/catkin_generated/installspace/planningConfig.cmake"
-    "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/build/planning/catkin_generated/installspace/planningConfig-version.cmake"
+    "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/planning/catkin_generated/installspace/planningConfig.cmake"
+    "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/planning/catkin_generated/installspace/planningConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning" TYPE FILE FILES "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/lab7/src/planning/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/planning" TYPE FILE FILES "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/src/planning/package.xml")
 endif()
 

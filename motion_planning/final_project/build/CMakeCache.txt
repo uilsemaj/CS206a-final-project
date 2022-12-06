@@ -525,6 +525,18 @@ object_recognition_msgs_DIR:PATH=/opt/ros/noetic/share/object_recognition_msgs/c
 octomap_msgs_DIR:PATH=/opt/ros/noetic/share/octomap_msgs/cmake
 
 //Value Computed by CMake
+pilz_industrial_motion_BINARY_DIR:STATIC=/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/pilz_industrial_motion/pilz_industrial_motion
+
+//Value Computed by CMake
+pilz_industrial_motion_SOURCE_DIR:STATIC=/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/src/pilz_industrial_motion/pilz_industrial_motion
+
+//Value Computed by CMake
+pilz_robot_programming_BINARY_DIR:STATIC=/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/pilz_industrial_motion/pilz_robot_programming
+
+//Value Computed by CMake
+pilz_robot_programming_SOURCE_DIR:STATIC=/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/src/pilz_industrial_motion/pilz_robot_programming
+
+//Value Computed by CMake
 planning_BINARY_DIR:STATIC=/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/build/planning
 
 //Value Computed by CMake
@@ -548,8 +560,14 @@ rosgraph_DIR:PATH=/opt/ros/noetic/share/rosgraph/cmake
 //The directory containing a CMake configuration file for rosgraph_msgs.
 rosgraph_msgs_DIR:PATH=/opt/ros/noetic/share/rosgraph_msgs/cmake
 
+//The directory containing a CMake configuration file for roslint.
+roslint_DIR:PATH=/opt/ros/noetic/share/roslint/cmake
+
 //The directory containing a CMake configuration file for rospy.
 rospy_DIR:PATH=/opt/ros/noetic/share/rospy/cmake
+
+//The directory containing a CMake configuration file for rostest.
+rostest_DIR:PATH=/opt/ros/noetic/share/rostest/cmake
 
 //The directory containing a CMake configuration file for rostime.
 rostime_DIR:PATH=/opt/ros/noetic/share/rostime/cmake
@@ -577,6 +595,9 @@ tf2_ros_DIR:PATH=/opt/ros/noetic/share/tf2_ros/cmake
 
 //The directory containing a CMake configuration file for trajectory_msgs.
 trajectory_msgs_DIR:PATH=/opt/ros/noetic/share/trajectory_msgs/cmake
+
+//The directory containing a CMake configuration file for visualization_msgs.
+visualization_msgs_DIR:PATH=/opt/ros/noetic/share/visualization_msgs/cmake
 
 //The directory containing a CMake configuration file for xmlrpcpp.
 xmlrpcpp_DIR:PATH=/opt/ros/noetic/share/xmlrpcpp/cmake

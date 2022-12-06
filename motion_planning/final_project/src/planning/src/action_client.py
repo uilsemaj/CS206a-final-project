@@ -39,20 +39,9 @@ def main():
     goal.request.start_state.joint_state.header.frame_id = "base"
     
     #Set the start state for the trajectory
-    JA_1 = float (input('Joint Angle 1: '))
-    JA_2 = float (input('Joint Angle 2: '))
-    JA_3 = float (input('Joint Angle 3: '))
-    JA_4 = float (input('Joint Angle 4: '))
-
-
-    JA_1_end = float (input('END Joint Angle 1: '))
-    JA_2_end = float (input('END Joint Angle 2: '))
-    JA_3_end = float (input('END Joint Angle 3: '))
-    JA_4_end = float (input('END Joint Angle 4: '))
     goal.request.start_state.joint_state.name = joint_names
-    goal.request.start_state.joint_state.position = [JA_1, JA_2, JA_3, JA_4, 0.0, 0.0, 0.0]
+    goal.request.start_state.joint_state.position = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     goal.request.start_state.joint_state.velocity = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-
     
     #Tell MoveIt whether to execute the trajectory after planning it
     goal.planning_options.plan_only = True
@@ -61,7 +50,7 @@ def main():
     #Note that the goal is specified with a collection of individual
     #joint constraints, rather than a vector of joint angles
     arm_joint_names = joint_names
-    target_joint_angles = [JA_1_end, JA_2_end, JA_3_end, JA_4_end, 0.0, 0.0, 0.0]
+    target_joint_angles = [1.0, 1.0, 0.3, 0.3, 0.0, 0.0, 0.0]
     tolerance = 0.0001
     consts = []
     for i in range(len(arm_joint_names)):
@@ -88,4 +77,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -6,10 +6,12 @@ Author: Valmik Prabhu
 
 import sys
 import rospy
+import moveit
 import moveit_commander
-from moveit_msgs.msg import OrientationConstraint, Constraints, CollisionObject
+from moveit_msgs.msg import OrientationConstraint, Constraints, CollisionObject,  MotionPlanRequest
 from geometry_msgs.msg import PoseStamped
 from shape_msgs.msg import SolidPrimitive
+from sensor_msgs.msg import JointState
 
 class PathPlanner(object):
     """
@@ -45,6 +47,7 @@ class PathPlanner(object):
         moveit_commander.roscpp_initialize(sys.argv)
 
         # Initialize the robot
+        """RobotCommander() is another library that establ"""
         self._robot = moveit_commander.RobotCommander()
 
         # Initialize the planning scene
@@ -54,13 +57,22 @@ class PathPlanner(object):
         self._planning_scene_publisher = rospy.Publisher('/collision_object', CollisionObject, queue_size=10)
 
         # Instantiate a move group
-        self._group = moveit_commander.MoveGroupCommander(group_name)
+        self._group = moveit_commander.MoveGroupCommander(group_name) #group name is the name of the arm we are using
 
         # Set the maximum time MoveIt will try to plan before giving up
         self._group.set_planning_time(5)
 
         # Set the bounds of the workspace
         self._group.set_workspace([-2, -2, -2, 2, 2, 2])
+
+        #This sets the planning pipeline to use
+        self._group.set_planning_pipeline_id("pilz_industrial_motion_planner")
+
+        #This sets the planner to use
+        self._group.set_planner_id("CIRC")
+
+        #This sets the end effector link
+        self._group.set_end_effector_link("right_hand")
 
         # Sleep for a bit to ensure that all inititialization has finished
         rospy.sleep(0.5)
@@ -70,6 +82,7 @@ class PathPlanner(object):
         print("============ Printing robot state")
         # print(self._group.get_current_state())
 
+
     def shutdown(self):
         """
         Code to run on shutdown. This is good practice for safety
@@ -78,6 +91,44 @@ class PathPlanner(object):
         """
         self._group = None
         rospy.loginfo("Stopping Path Planner")
+
+
+    def plan_to_pose(self, v_factor, a_factor, waypoints, orientation_constraints):
+        """Generates a trajectory plan given waypoints using the specified planner
+        Inputs: 
+        v_factor: velocity scaling factor, depends on BPM of input audio
+        a_factor: acceleration scaling factor, depends on BPM of input audio
+        waypoints: distinct Pose() points to pass through
+        orientation_constraints
+
+        Outputs: 
+        path: A moveit_msgs/RobotTrajectory path
+        """
+        self._group.set_max_velocity_scaling_factor(v_factor)
+        self._group.set_max_acceleration_scaling_factor(a_factor)
+        self._group.set_pose_targets(waypoints, end_effector_link = "right_hand")
+
+        plan = self._group.plan()
+
+        return plan
+
+    def pilz_plan_to_pose(self, v_factor, a_factor, waypoints, orientation_constraints):
+        """Generates a trajectory plan given waypoints using the specified planner
+        Inputs: 
+        v_factor: velocity scaling factor, depends on BPM of input audio
+        a_factor: acceleration scaling factor, depends on BPM of input audio
+        waypoints: distinct Pose() points to pass through
+        orientation_constraints
+
+        Outputs: 
+        path: A moveit_msgs/RobotTrajectory path
+        """
+        self._group.set_max_velocity_scaling_factor(v_factor)
+        self._group.set_max_acceleration_scaling_factor(a_factor)
+
+        
+        
+
 
     def cartesian_plan_to_pose(self, waypoints, orientation_constraints):
         """
