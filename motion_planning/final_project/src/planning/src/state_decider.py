@@ -28,7 +28,7 @@ from std_msgs.msg import Header
 from std_msgs.msg import String
 
 this_file = os.path.dirname(os.path.abspath(__file__))
-CSV_DIR = '/'.join(this_file.split('/')[:-2]) + '/planning/src'
+CSV_DIR = "/home/cc/ee106a/fa22/class/ee106a-aeu/ros_workspaces/final_project/src/planning/img_processing/src"
 print(CSV_DIR)
 
 # Define the method which contains the node's main functionality
@@ -86,7 +86,7 @@ def wp22(csv_name):
     print(wpose.position.y)     #RH Added
 
     point_array = np.loadtxt(CSV_DIR + "/" + csv_name, delimiter=",")
-    point_array = np.transpose(point_array)
+    # point_array = np.transpose(point_array)
     print(point_array)
     
     for coords in point_array:

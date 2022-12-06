@@ -19,7 +19,7 @@ from moveit_msgs.msg import OrientationConstraint
 from geometry_msgs.msg import PoseStamped, Pose, Quaternion, Point, PoseArray
 from std_msgs.msg import Header
 
-from path_planner_cartesianv3 import PathPlanner
+from path_planner_og import PathPlanner
 
 try:
     from controller import Controller
@@ -31,15 +31,24 @@ def execute_motion(planner, waypoints, orien_const):
     while not rospy.is_shutdown():
         try:
             # Might have to edit this . . .
-            plan = planner.cartesian_plan_to_pose(waypoints.poses, [orien_const])
-            # print(rostype.plan)
+
+            target_1 = waypoints.poses[0]
+            target_2 = waypoints.poses[-1]
+            print(target_1)
+            print(target_2)
+
+            for i in waypoints.poses:
+                plan = planner.plan_to_pose(0.5, 0.5, i, [orien_const])
+            # # plan = planner.cartesian_plan_to_pose(waypoints.poses[1:4], [orien_const])
+            # plan = planner.plan_to_pose(0.5, 0.5, waypoints.poses, [orien_const])
+            # # print(rostype.plan)
 
             # user_input = input("Press y to move the right arm to goal poses: ")
-            user_input = 'y'
+                user_input = 'y'
 
-            if user_input == 'y':
-                if not planner._group.execute(plan, wait=True):#planner.execute_plan(plan[1]):
-                    raise Exception("Execution failed")
+                if user_input == 'y':
+                    if not planner._group.execute(plan, wait=True):#planner.execute_plan(plan[1]):
+                        raise Exception("Execution failed")
         except Exception as e:
             print(e)
             traceback.print_exc()
@@ -77,7 +86,7 @@ def main():
 
     # Make sure that you've looked at and understand path_planner.py before starting
 
-    planner = PathPlanner("right_arm")
+    planner = PathPlanner("right_arm")   #right arm is group name
 
 
     #
