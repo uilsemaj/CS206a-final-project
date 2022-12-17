@@ -1,8 +1,0 @@
-prefix=/home/cc/ee106a/fa22/class/ee106a-agl/ros_workspaces/Github/CS206a-final-project/ros_signal_processing/install
-
-Name: signal_processing
-Description: Description of signal_processing
-Version: 0.0.0
-Cflags: -I${prefix}/include
-Libs: -L${prefix}/lib 
-Requires: roscpp rospy std_msgs message_runtime
